@@ -1,0 +1,34 @@
+### Get all characters
+GET {{localhost}}:{{port}}/api/asterix/characters
+
+### Get character by id
+GET {{localhost}}:{{port}}/api/asterix/character/6a1044339b40c03acbbc8812
+
+### Add new character
+POST {{localhost}}:{{port}}/api/asterix/character/new
+Content-Type: application/json
+
+{
+  "name": "Java Student",
+  "age": 36,
+  "profession": "Warrior"
+}
+
+> {%
+    var res = response.body
+    client.global.set("id", res.id)
+
+ %}
+
+### Update character by id
+PUT {{localhost}}:{{port}}/api/asterix/character/{{id}}
+Content-Type: application/json
+
+{
+  "name": "Junior Java Developer",
+  "age": 36,
+  "profession": "Warrior"
+}
+
+### Remove character by id
+DELETE {{localhost}}:{{port}}/api/asterix/character/{{id}}
