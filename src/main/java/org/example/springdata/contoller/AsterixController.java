@@ -24,7 +24,7 @@ public class AsterixController {
             return this.characterRepo.findAll();
         }
 
-        return this.characterRepo.findCharacterByName(name);
+        return this.characterRepo.findCharacterByNameContainsIgnoreCase(name);
     }
 
     @GetMapping("/character/{id}")
@@ -71,5 +71,13 @@ public class AsterixController {
         this.characterRepo.delete(character);
 
         return true;
+    }
+
+    @GetMapping("/character/average-age")
+    public double getAverageAgeByProfession(@RequestParam String profession) {
+        return this.characterRepo.findCharactersByProfessionContainsIgnoreCase(profession).stream()
+                .mapToInt(Character::age)
+                .average()
+                .orElse(0.0);
     }
 }

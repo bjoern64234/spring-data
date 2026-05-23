@@ -2,7 +2,7 @@
 GET {{localhost}}:{{port}}/api/asterix/characters
 
 ### Get character by name
-GET {{localhost}}:{{port}}/api/asterix/characters?name=Miraculix
+GET {{localhost}}:{{port}}/api/asterix/characters?name=miraculix
 
 ### Get character by id
 GET {{localhost}}:{{port}}/api/asterix/character/6a1044339b40c03acbbc8812
@@ -35,3 +35,6 @@ Content-Type: application/json
 
 ### Remove character by id
 DELETE {{localhost}}:{{port}}/api/asterix/character/{{id}}
+
+### Calculate avarege age for one profession
+GET {{localhost}}:{{port}}/api/asterix/character/average-age?profession=druid
