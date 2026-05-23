@@ -1,6 +1,9 @@
 ### Get all characters
 GET {{localhost}}:{{port}}/api/asterix/characters
 
+### Get character by name
+GET {{localhost}}:{{port}}/api/asterix/characters?name=Miraculix
+
 ### Get character by id
 GET {{localhost}}:{{port}}/api/asterix/character/6a1044339b40c03acbbc8812
 

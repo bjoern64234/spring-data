@@ -18,8 +18,13 @@ public class AsterixController {
     }
 
     @GetMapping("/characters")
-    public List<Character> getAllCharacters() {
-        return this.characterRepo.findAll();
+    public List<Character> getAllCharacters(@RequestParam(required = false) String name) {
+
+        if (name == null) {
+            return this.characterRepo.findAll();
+        }
+
+        return this.characterRepo.findCharacterByName(name);
     }
 
     @GetMapping("/character/{id}")
