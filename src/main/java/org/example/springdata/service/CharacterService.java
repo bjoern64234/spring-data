@@ -1,11 +1,11 @@
 package org.example.springdata.service;
 
+import org.example.springdata.dto.CharacterDto;
 import org.example.springdata.model.Character;
 import org.example.springdata.repository.CharacterRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class CharacterService {
@@ -16,7 +16,7 @@ public class CharacterService {
         this.characterRepo = characterRepo;
     }
 
-    public List<org.example.springdata.model.Character> getAllCharacters(String name) {
+    public List<Character> getAllCharacters(String name) {
 
         if (name == null) {
             return this.characterRepo.findAll();
@@ -25,39 +25,39 @@ public class CharacterService {
         return this.characterRepo.findCharacterByNameContainsIgnoreCase(name);
     }
 
-    public org.example.springdata.model.Character getCharacterById(String id) {
+    public Character getCharacterById(String id) {
         return this.characterRepo.findById(id).orElse(null);
     }
 
 
-    public org.example.springdata.model.Character saveCharacter(Character requestBody) {
-        org.example.springdata.model.Character newCharacter = org.example.springdata.model.Character.builder().build()
-                .withId(UUID.randomUUID().toString())
+    public CharacterDto saveCharacter(String id, Character requestBody) {
+        Character newCharacter = Character.builder().build()
+                .withId(id)
                 .withName(requestBody.name())
                 .withAge(requestBody.age())
                 .withProfession(requestBody.profession());
 
         this.characterRepo.save(newCharacter);
 
-        return newCharacter;
+        return this.toCharacterDto(newCharacter);
     }
 
-    public org.example.springdata.model.Character updateCharacter(String id, Character requestBody) {
-        org.example.springdata.model.Character character = this.characterRepo.findById(id).orElse(null);
+    public CharacterDto updateCharacter(String id, Character requestBody) {
+        Character character = this.characterRepo.findById(id).orElse(null);
 
         if (character == null) {
             return null;
         }
 
-        org.example.springdata.model.Character updatedCharacter = character.withName(requestBody.name()).withAge(requestBody.age()).withProfession(requestBody.profession());
+        Character updatedCharacter = character.withName(requestBody.name()).withAge(requestBody.age()).withProfession(requestBody.profession());
 
         this.characterRepo.save(updatedCharacter);
 
-        return updatedCharacter;
+        return this.toCharacterDto(updatedCharacter);
     }
 
     public boolean deleteCharacter(String id) {
-        org.example.springdata.model.Character character = this.characterRepo.findById(id).orElse(null);
+        Character character = this.characterRepo.findById(id).orElse(null);
 
         if (character == null) {
             return false;
@@ -73,5 +73,12 @@ public class CharacterService {
                 .mapToInt(Character::age)
                 .average()
                 .orElse(0.0);
+    }
+
+    private CharacterDto toCharacterDto(Character character) {
+        return CharacterDto.builder().build()
+                .withName(character.name())
+                .withAge(character.age())
+                .withProfession(character.profession());
     }
 }

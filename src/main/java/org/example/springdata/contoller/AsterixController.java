@@ -1,21 +1,23 @@
 package org.example.springdata.contoller;
 
+import org.example.springdata.dto.CharacterDto;
 import org.example.springdata.model.Character;
-import org.example.springdata.repository.CharacterRepo;
 import org.example.springdata.service.CharacterService;
+import org.example.springdata.service.IdService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/asterix")
 public class AsterixController {
 
     private final CharacterService characterService;
+    private IdService idService;
 
-    public AsterixController(CharacterService characterService) {
+    public AsterixController(CharacterService characterService, IdService idService) {
         this.characterService = characterService;
+        this.idService = idService;
     }
 
     @GetMapping("/characters")
@@ -29,12 +31,12 @@ public class AsterixController {
     }
 
     @PostMapping("/character/new")
-    public Character saveCharacter(@RequestBody Character requestBody) {
-        return this.characterService.saveCharacter(requestBody);
+    public CharacterDto saveCharacter(@RequestBody Character requestBody) {
+        return this.characterService.saveCharacter(this.idService.generateId(), requestBody);
     }
 
     @PutMapping("/character/{id}")
-    public Character updateCharacter(@PathVariable String id, @RequestBody Character requestBody) {
+    public CharacterDto updateCharacter(@PathVariable String id, @RequestBody Character requestBody) {
         return this.characterService.updateCharacter(id, requestBody);
     }
 
