@@ -3,10 +3,11 @@ package org.example.springdata.contoller;
 import org.example.springdata.dto.CharacterDto;
 import org.example.springdata.model.Character;
 import org.example.springdata.service.CharacterService;
-import org.example.springdata.service.IdService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/asterix")
@@ -39,12 +40,12 @@ public class AsterixController {
     }
 
     @DeleteMapping("/character/{id}")
-    public boolean deleteCharacter(@PathVariable String id) {
-        return this.characterService.deleteCharacter(id);
+    public void deleteCharacter(@PathVariable String id) {
+        this.characterService.deleteCharacter(id);
     }
 
     @GetMapping("/character/average-age")
-    public double getAverageAgeByProfession(@RequestParam String profession) {
+    public ResponseEntity<Map<String, Double>> getAverageAgeByProfession(@RequestParam String profession) {
         return this.characterService.getAverageAgeByProfession(profession);
     }
 }

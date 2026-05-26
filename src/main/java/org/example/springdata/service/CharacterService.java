@@ -3,10 +3,12 @@ package org.example.springdata.service;
 import org.example.springdata.dto.CharacterDto;
 import org.example.springdata.model.Character;
 import org.example.springdata.repository.CharacterRepo;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CharacterService {
@@ -62,22 +64,18 @@ public class CharacterService {
         return updatedCharacter;
     }
 
-    public boolean deleteCharacter(String id) {
-        Character character = this.characterRepo.findById(id).orElse(null);
-
-        if (character == null) {
-            return false;
-        }
+    public void deleteCharacter(String id) {
+        Character character = this.characterRepo.findById(id).orElseThrow(() -> new RuntimeException("character not found"));
 
         this.characterRepo.delete(character);
-
-        return true;
     }
 
-    public double getAverageAgeByProfession(String profession) {
-        return this.characterRepo.findCharactersByProfessionContainsIgnoreCase(profession).stream()
+    public ResponseEntity<Map<String, Double>> getAverageAgeByProfession(String profession) {
+        double averageAge = this.characterRepo.findCharactersByProfessionContainsIgnoreCase(profession).stream()
                 .mapToInt(Character::age)
                 .average()
                 .orElse(0.0);
+
+        return ResponseEntity.ok(Map.of("averageAge", averageAge));
     }
 }

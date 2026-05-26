@@ -5,9 +5,11 @@ import org.example.springdata.model.Character;
 import org.example.springdata.repository.CharacterRepo;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -88,9 +90,8 @@ class CharacterServiceTest {
         Character expected = Character.builder().id(id).name("Max").age(28).profession("Mage").build();
         when(mockRepo.findById(id)).thenReturn(Optional.of(expected));
         // When
-        boolean actual = characterService.deleteCharacter(id);
+        characterService.deleteCharacter(id);
         // Then
-        assertTrue(actual);
         verify(mockRepo).delete(expected);
     }
 
@@ -103,9 +104,10 @@ class CharacterServiceTest {
         List<Character> expected = new ArrayList<>(List.of(c1,c2));
         when(mockRepo.findCharactersByProfessionContainsIgnoreCase("Mage")).thenReturn(expected);
         // When
-        double actual  = characterService.getAverageAgeByProfession("Mage");
+        ResponseEntity<Map<String, Double>> actual  = characterService.getAverageAgeByProfession("Mage");
         // Then
-        assertEquals(29, actual);
+        assert actual.getBody() != null;
+        assertEquals(29, actual.getBody().get("averageAge"));
         verify(mockRepo).findCharactersByProfessionContainsIgnoreCase("Mage");
     }
 }
