@@ -13,11 +13,9 @@ import java.util.List;
 public class AsterixController {
 
     private final CharacterService characterService;
-    private IdService idService;
 
-    public AsterixController(CharacterService characterService, IdService idService) {
+    public AsterixController(CharacterService characterService) {
         this.characterService = characterService;
-        this.idService = idService;
     }
 
     @GetMapping("/characters")
@@ -32,7 +30,7 @@ public class AsterixController {
 
     @PostMapping("/character/new")
     public Character saveCharacter(@RequestBody CharacterDto requestBody) {
-        return this.characterService.saveCharacter(this.idService.generateId(), requestBody);
+        return this.characterService.saveCharacter(requestBody);
     }
 
     @PutMapping("/character/{id}")

@@ -4,6 +4,7 @@ import org.example.springdata.dto.CharacterDto;
 import org.example.springdata.model.Character;
 import org.example.springdata.repository.CharacterRepo;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -11,12 +12,14 @@ import java.util.List;
 public class CharacterService {
 
     private final CharacterRepo characterRepo;
+    private final IdService idService;
 
-    public CharacterService(CharacterRepo characterRepo) {
+    public CharacterService(CharacterRepo characterRepo, IdService idService) {
         this.characterRepo = characterRepo;
+        this.idService = idService;
     }
 
-    public List<Character> getAllCharacters(String name) {
+    public List<Character> getAllCharacters(@RequestParam(required = false) String name) {
 
         if (name == null) {
             return this.characterRepo.findAll();
@@ -30,9 +33,9 @@ public class CharacterService {
     }
 
 
-    public Character saveCharacter(String id, CharacterDto requestBody) {
+    public Character saveCharacter(CharacterDto requestBody) {
         Character newCharacter = Character.builder().build()
-                .withId(id)
+                .withId(idService.generateId())
                 .withName(requestBody.name())
                 .withAge(requestBody.age())
                 .withProfession(requestBody.profession());
