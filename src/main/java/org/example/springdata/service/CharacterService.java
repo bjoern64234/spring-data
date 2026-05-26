@@ -30,7 +30,7 @@ public class CharacterService {
     }
 
 
-    public CharacterDto saveCharacter(String id, Character requestBody) {
+    public Character saveCharacter(String id, CharacterDto requestBody) {
         Character newCharacter = Character.builder().build()
                 .withId(id)
                 .withName(requestBody.name())
@@ -39,21 +39,24 @@ public class CharacterService {
 
         this.characterRepo.save(newCharacter);
 
-        return this.toCharacterDto(newCharacter);
+        return newCharacter;
     }
 
-    public CharacterDto updateCharacter(String id, Character requestBody) {
+    public Character updateCharacter(String id, CharacterDto requestBody) {
         Character character = this.characterRepo.findById(id).orElse(null);
 
         if (character == null) {
             return null;
         }
 
-        Character updatedCharacter = character.withName(requestBody.name()).withAge(requestBody.age()).withProfession(requestBody.profession());
+        Character updatedCharacter = character
+                .withName(requestBody.name())
+                .withAge(requestBody.age())
+                .withProfession(requestBody.profession());
 
         this.characterRepo.save(updatedCharacter);
 
-        return this.toCharacterDto(updatedCharacter);
+        return updatedCharacter;
     }
 
     public boolean deleteCharacter(String id) {
@@ -73,12 +76,5 @@ public class CharacterService {
                 .mapToInt(Character::age)
                 .average()
                 .orElse(0.0);
-    }
-
-    private CharacterDto toCharacterDto(Character character) {
-        return CharacterDto.builder().build()
-                .withName(character.name())
-                .withAge(character.age())
-                .withProfession(character.profession());
     }
 }

@@ -31,12 +31,12 @@ public class AsterixController {
     }
 
     @PostMapping("/character/new")
-    public CharacterDto saveCharacter(@RequestBody Character requestBody) {
+    public Character saveCharacter(@RequestBody CharacterDto requestBody) {
         return this.characterService.saveCharacter(this.idService.generateId(), requestBody);
     }
 
     @PutMapping("/character/{id}")
-    public CharacterDto updateCharacter(@PathVariable String id, @RequestBody Character requestBody) {
+    public Character updateCharacter(@PathVariable String id, @RequestBody CharacterDto requestBody) {
         return this.characterService.updateCharacter(id, requestBody);
     }
 

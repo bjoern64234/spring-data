@@ -5,7 +5,7 @@ GET {{localhost}}:{{port}}/api/asterix/characters
 GET {{localhost}}:{{port}}/api/asterix/characters?name={{name}}
 
 ### Get character by id
-GET {{localhost}}:{{port}}/api/asterix/character/db626e50-d41a-41b2-a145-1b07968bd236
+GET {{localhost}}:{{port}}/api/asterix/character/{{id}}
 
 ### Add new character
 POST {{localhost}}:{{port}}/api/asterix/character/new
@@ -19,12 +19,12 @@ Content-Type: application/json
 
 > {%
     var res = response.body
+    client.global.set("id", res.id)
     client.global.set("name", res.name)
-
  %}
 
 ### Update character by id
-PUT {{localhost}}:{{port}}/api/asterix/character/db626e50-d41a-41b2-a145-1b07968bd236
+PUT {{localhost}}:{{port}}/api/asterix/character/{{id}}
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 
 ### Remove character by id
-DELETE {{localhost}}:{{port}}/api/asterix/character/db626e50-d41a-41b2-a145-1b07968bd236
+DELETE {{localhost}}:{{port}}/api/asterix/character/{{id}}
 
 ### Calculate avarege age for one profession
 GET {{localhost}}:{{port}}/api/asterix/character/average-age?profession=druid
